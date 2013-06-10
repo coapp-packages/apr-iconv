@@ -1,0 +1,37 @@
+@import default_tools;
+
+default {
+
+    .Exec {
+        Condition="Exists('$(MSBuildThisFileDirectory)packages.config')";
+        Command = @"nuget install $(MSBuildThisFileDirectory)packages.config -x -OutputDirectory .\packages >nul";
+    };
+
+    ("v110, v100", "Win32, x64", "Debug,Release", "Dynamic, Static, ltcg") => {
+		.PushEnvironment {};
+		.LoadSystemEnvironment {};
+        .SetEnvironmentFromTarget.Target = "VC_${0}_${1}";
+		.Message.Text = @"
+
+
+
+        Env:        ${0}-${1}  :  ${2}  ${3}
+        EnvExists:  $(IsEnvironmentValid)";
+        
+        .Exec {
+            Condition="$(IsEnvironmentValid)";
+            Command = @"msbuild $(MSBuildThisFileDirectory)libapriconv-1.vcxproj /p:PlatformToolset=${0};Platform=${1};Configuration=${2};UsesConfigurationType=${3}";
+        };
+        
+        .PopEnvironment{};
+	};
+	
+};
+
+clean {
+    .RemoveDir.Directories = @"$(MSBuildThisFileDirectory)intermediate";
+};
+
+nuke {
+    .RemoveDir.Directories = @"$(MSBuildThisFileDirectory)output";
+};
