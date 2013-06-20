@@ -1,7 +1,7 @@
 nuget {
 	nuspec {
 		id = libapr-iconv;
-		version : 1.2.1.1;
+		version : 1.2.1.2;
 		title: "Apache Portable Runtime - iconv";
 		authors: {APR-iconv contributors};
 		owners: {CoApp Project, Tim Rogers};
@@ -19,8 +19,8 @@ nuget {
 
     dependencies {
         packages : {
-            expat/2.1.0.10;
-            libapr/1.4.6.1;
+            expat/2.1;
+            libapr/1.4;
         };
     }
 
